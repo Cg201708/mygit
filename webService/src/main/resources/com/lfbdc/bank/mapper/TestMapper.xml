@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lfbdc.bank.dao.TestDao"> 
+  <resultMap id="BaseResultMap" type="com.lfbdc.bank.model.DysJ">
+  	<id column="SLBH" jdbcType="VARCHAR" property="slbh" />
+    <result column="DJLX" jdbcType="VARCHAR" property="djlx" />
+    <result column="BDCZH" jdbcType="VARCHAR" property="bdczh" />
+    <result column="FZJG" jdbcType="VARCHAR" property="fzjg" />
+  </resultMap> 
+	<select id="selectByDy" resultMap="BaseResultMap">
+		select slbh,bdczh,djlx,fzrq from dj_djb
+		<where>
+		bdczh like '%'||#{bdczh,jdbcType=VARCHAR}||'%'
+		</where>
+	</select>
+  </mapper>

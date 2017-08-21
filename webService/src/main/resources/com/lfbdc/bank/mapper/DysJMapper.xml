@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lfbdc.bank.dao.DysJMapper"> 
+  <resultMap id="BaseResultMap" type="com.lfbdc.bank.model.DysJ">
+  	<id column="SLBH" jdbcType="VARCHAR" property="slbh" />
+    <result column="DJLX" jdbcType="VARCHAR" property="djlx" />
+    <result column="BDCZH" jdbcType="VARCHAR" property="bdczh" />
+    <result column="FZJG" jdbcType="VARCHAR" property="fzjg" />
+  </resultMap> 
+<select id="selectByRecord" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select t2.slbh,t2.bdczh,t2.djlx,t2.fzjg from 
+		(select t1.slbh,t1.bdczh,t1.djlx,t1.fzjg,rownum as rn from 
+		DJ_DJB t1 where 1=1 and t1.bdczh like '%'||#{bdczh,jdbcType=VARCHAR}||'%') t2 
+  <where>
+		t2.rn &gt; #{page.startPos,jdbcType=NUMERIC} and t2.rn &lt; #{page.pageSize,jdbcType=NUMERIC}
+  </where>
+  </select>
+<select id="getCount" parameterType="String" resultType="int">
+select count(*) from dj_djb where bdczh like '%'||#{popedom,jdbcType=VARCHAR}||'%'
+  </select>
+  </mapper>

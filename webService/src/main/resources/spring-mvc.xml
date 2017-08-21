@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd"
+    default-lazy-init="true">
+
+  <mvc:annotation-driven />
+
+  
+  <!-- 自动扫描controller包的@Controller -->
+  <context:component-scan base-package="com.lfbdc.bank.controller" />
+  
+  <!-- 避免IE执行ajax时，返回json出现下载文件 -->
+  <bean id="mappingJacksonHttpMessageConverter"
+      class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    <property name="supportedMediaTypes">
+      <list>
+        <value>application/json;charset=utf-8</value>
+        <value>text/html;charset=UTF-8</value>
+      </list>
+    </property>
+  </bean>
+  
+  <!-- 启动spring mvc注解功能，完成请求和注解pojo的映射 -->
+  <bean
+      class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <!-- json转换器 -->
+        <ref bean="mappingJacksonHttpMessageConverter" />
+      </list>
+    </property>
+  </bean>
+  
+  <!-- freemarker -->
+  <bean id="freemarkerConfigurer"
+      class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
+    <property name="templateLoaderPath" value="/WEB-INF/jsp/" />
+    <property name="freemarkerSettings">
+      <props>
+        <prop key="default_encoding">UTF-8</prop>
+        <prop key="output_encoding">UTF-8</prop>
+        <prop key="locale">zh_CN</prop>
+        <prop key="date_format">yyyy-MM-dd</prop>
+        <prop key="time_format">HH:mm:ss</prop>
+        <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+        <prop key="classic_compatible">true</prop>
+      </props>
+    </property>
+  </bean>
+  <bean id="multipartResolver"
+      class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="defaultEncoding" value="UTF-8" />
+  </bean>
+  <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <property name="suffix" value=".jsp"/>
+    <property name="contentType" value="text/html;charset=UTF-8" />
+  </bean>
+</beans>
